@@ -20,9 +20,10 @@ pipeline{
             steps {
                 echo "building the application on ${NODE_NAME}."
                 slackSend color: "warning", message: "Starting build process for ${REPO_NAME} from ${BRANCH_NAME} branch..."
-                sh "if [ ! -d ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/ ]; then mkdir -p ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/; fi"
-                sh "rsync -Puqr --delete-during ${JK_WORKSPACE}/${REPO_NAME}_${BRANCH_NAME}/ ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/"
-                sh "cd ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/ && pip3 install -r requirements.txt"
+                sh 'if [ ! -d ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/ ]; then mkdir -p ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/; fi'
+                sh 'rsync -Puqr --delete-during ${JK_WORKSPACE}/${REPO_NAME}_${BRANCH_NAME}/ ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/'
+                sh 'cd ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/ && pip3 install -r requirements.txt'
+                sh 'touch .env && API_KEY = ${API_KEY} >> .env &&  SATELLITE = ${SATELLITE} >> .env &&  ENCRYPTION_PASSPHRASE >> ${ENCRYPTION_PASSPHRASE}'
                 slackSend color: "good", message: "Success building the application."
             }
         }
