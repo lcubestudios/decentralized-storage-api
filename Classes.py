@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 import os
 import sys
 import requests
+import cgi, cgitb
 import json
 
 # LOAD CONTAINER VARIABLES
