@@ -1,0 +1,2 @@
+python-dotenv==0.20.0
+uplink-python==1.2.2.0

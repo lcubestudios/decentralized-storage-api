@@ -1,9 +1,9 @@
 pipeline{
     agent { label 'api-node' }
-    tools { nodejs 'node-14.18.3' }
+    //tools { nodejs 'node-14.18.3' }
     
     environment {
-        REPO_NAME = '' //Mandatory
+        REPO_NAME = 'dcs-api' //Mandatory
                 
         //Do not modify
         APACHE_DIR = '/var/www/html'
