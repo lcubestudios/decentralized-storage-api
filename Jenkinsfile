@@ -36,7 +36,7 @@ pipeline{
     post {
         success {
             echo 'The pipeline completed successfully.'
-            slackSend color: "good", message: "The pipeline completed successfully. https://${BRANCH_NAME}.lcubestudios.io/${REPO_NAME}/dist/"
+            slackSend color: "good", message: "The pipeline completed successfully. https://${BRANCH_NAME}.lcubestudios.io/${REPO_NAME}/"
         }
         failure {
             echo 'pipeline failed, at least one step failed'
