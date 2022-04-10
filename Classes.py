@@ -1,3 +1,4 @@
+from array import array
 from datetime import datetime
 from uplink_python.errors import StorjException, BucketNotEmptyError, BucketNotFoundError
 from uplink_python.module_classes import ListObjectsOptions, Permission, SharePrefix
@@ -49,14 +50,14 @@ class Methods():
             # enlist all the buckets in given Storj project
             #print("\nListing bucket's names and creation time...")
             bucket_list = project.list_buckets()
+            json_output = []
             for bucket in bucket_list:
                 # as python class object
                 # print(bucket.name, " | ", datetime.fromtimestamp(bucket.created))
                 # # as python dictionary
                 # print(bucket.get_dict())
-                data = bucket.get_dict()
-                json_formatted_str = json.dumps(data, indent=4, sort_keys=True)
-                print(json_formatted_str)
+                json_output.append(data)
+            print(json_output)
             #print("Buckets listing: COMPLETE!")
             #
         except StorjException as exception:
@@ -69,12 +70,13 @@ class Methods():
             objects_list = project.list_objects(bucket, ListObjectsOptions(recursive=True,
                                                                             system=True))
             # print all objects path
+            json_output = []
             for obj in objects_list:
                 # print(obj.key, " | ", obj.is_prefix)  # as python class object
                 # print(obj.get_dict())  # as python dictionary
                 data = obj.get_dict()
-                json_formatted_str = json.dumps(data, indent=4, sort_keys=True)
-                print(json_formatted_str)
+                json_output.append(data)
+            print(json.dumps(json_output))
             #print("Objects listing: COMPLETE!")
             #
         except StorjException as exception:
