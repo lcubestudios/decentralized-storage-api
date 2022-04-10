@@ -4,7 +4,12 @@ pipeline{
     
     environment {
         REPO_NAME = 'dcs-api' //Mandatory
-                
+        
+        //Secrets
+        API_KEY = credentials('storj_api')
+        SATELLITE = credentials('storj_satellite')
+        ENCRYPTION_PASSPHRASE = credentials('storj_encryption_passphrase')
+
         //Do not modify
         APACHE_DIR = '/var/www/html'
         SNYK_ID = 'lcube-snyk-token'
@@ -17,6 +22,7 @@ pipeline{
                 slackSend color: "warning", message: "Starting build process for ${REPO_NAME} from ${BRANCH_NAME} branch..."
                 sh "if [ ! -d ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/ ]; then mkdir -p ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/; fi"
                 sh "rsync -Puqr --delete-during ${JK_WORKSPACE}/${REPO_NAME}_${BRANCH_NAME}/ ${APACHE_DIR}/${BRANCH_NAME}/${REPO_NAME}/"
+                sh "pip3 install -r requirements"
                 slackSend color: "good", message: "Success building the application."
             }
         }
@@ -36,7 +42,7 @@ pipeline{
     post {
         success {
             echo 'The pipeline completed successfully.'
-            slackSend color: "good", message: "The pipeline completed successfully. https://${BRANCH_NAME}.lcubestudios.io/${REPO_NAME}/"
+            slackSend color: "good", message: "The pipeline completed successfully. https://api.lcubestudios.io/${BRANCH_NAME}/${REPO_NAME}/"
         }
         failure {
             echo 'pipeline failed, at least one step failed'

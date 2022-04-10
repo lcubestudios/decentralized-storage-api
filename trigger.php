@@ -4,7 +4,7 @@ $method = $_SERVER['REQUEST_METHOD'];
 switch ($method) {
     case 'GET':
         $sh = shell_exec("python3 ListFiles.py");
-        echo(json_encode($sh));
+        echo $sh;
         break;
 }
 
