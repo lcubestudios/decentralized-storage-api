@@ -30,15 +30,15 @@ class Methods():
             # create an object of Uplink class
             uplink = Uplink()
             # request access using passphrase
-            print("\nRequesting Access using passphrase...")
+            #print("\nRequesting Access using passphrase...")
             access = uplink.request_access_with_passphrase(satellite, api_key,
                                                             encryption_passphrase)
-            print("Request Access: SUCCESS!")
+            #print("Request Access: SUCCESS!")
         
             # open Storj project
-            print("\nOpening the Storj project, corresponding to the parsed Access...")
+            #print("\nOpening the Storj project, corresponding to the parsed Access...")
             project = access.open_project()
-            print("Desired Storj project: OPENED!")
+            #print("Desired Storj project: OPENED!")
             return project
             #
         except StorjException as exception:
@@ -47,7 +47,7 @@ class Methods():
     def EnlistAllBuckets(self,project):
         try:
             # enlist all the buckets in given Storj project
-            print("\nListing bucket's names and creation time...")
+            #print("\nListing bucket's names and creation time...")
             bucket_list = project.list_buckets()
             for bucket in bucket_list:
                 # as python class object
@@ -57,7 +57,7 @@ class Methods():
                 data = bucket.get_dict()
                 json_formatted_str = json.dumps(data, indent=4, sort_keys=True)
                 print(json_formatted_str)
-            print("Buckets listing: COMPLETE!")
+            #print("Buckets listing: COMPLETE!")
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
@@ -65,7 +65,7 @@ class Methods():
     def ListObject(self,project):
         try:
             # list objects in given bucket with above options or None
-            print("\nListing object's names...")
+            #print("\nListing object's names...")
             objects_list = project.list_objects(bucket, ListObjectsOptions(recursive=True,
                                                                             system=True))
             # print all objects path
@@ -75,7 +75,7 @@ class Methods():
                 data = obj.get_dict()
                 json_formatted_str = json.dumps(data, indent=4, sort_keys=True)
                 print(json_formatted_str)
-            print("Objects listing: COMPLETE!")
+            #print("Objects listing: COMPLETE!")
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
@@ -83,7 +83,7 @@ class Methods():
     def UploadObject(self,project,file_item):
         try:
             # upload file/object
-            print("\nUploading data...")
+            #print("\nUploading data...")
             # get handle of file to be uploaded
             # file_handle = open(src_full_name, 'r+b')
             # check if the file has been uploaded
@@ -104,7 +104,7 @@ class Methods():
                 upload.commit()
                 # close file handle
                 file_handle.close()
-                print("Upload: Complete!")
+                #print("Upload: Complete!")
                 #
             else:
                 print("Upload Failed")
@@ -113,8 +113,8 @@ class Methods():
     
     def DownloadObject(self,project):
         try:
-             # download file/object
-            print("\nDownloading data...")
+            # download file/object
+            #print("\nDownloading data...")
             # get handle of file which data has to be downloaded
             file_handle = open(destination_full_filename, 'w+b')
             # get download handle to specified bucket and object path to be downloaded
@@ -127,7 +127,7 @@ class Methods():
             download.close()
             # close file handle
             file_handle.close()
-            print("Download: COMPLETE!")
+            #print("Download: COMPLETE!")
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
