@@ -5,11 +5,6 @@ pipeline{
     environment {
         REPO_NAME = 'dcs-api' //Mandatory
         
-        //Secrets
-        API_KEY = credentials('storj_api')
-        SATELLITE = credentials('storj_satellite')
-        ENCRYPTION_PASSPHRASE = credentials('storj_encryption_passphrase')
-
         //Do not modify
         APACHE_DIR = '/var/www/html'
         SNYK_ID = 'lcube-snyk-token'

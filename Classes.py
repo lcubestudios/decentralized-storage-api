@@ -1,4 +1,6 @@
 #!/usr/bin/python3
+print("Content-Type:text/html;charset=utf-8")
+print()
 from array import array
 from datetime import datetime
 from uplink_python.errors import StorjException, BucketNotEmptyError, BucketNotFoundError
