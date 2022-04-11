@@ -1,12 +1,12 @@
+#!/usr/bin/python3
+print("Content-Type:text/html;charset=utf-8")
+print()
 from distutils.command.upload import upload
 from sqlite3 import paramstyle
 from Classes import *
 
 creds = Credentials()
 method = Methods()
-cgitb.enable()
-print("Content-Type:text/html;charset=utf-8")
-print()
 
 headers = {
     'Content-Type': 'application/json', 
