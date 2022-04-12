@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 import os
 import sys
 import requests
-import cgi, cgitb
+import cgi 
+import cgitb; cgitb.enable()
 import json
 
 # LOAD CONTAINER VARIABLES
@@ -46,7 +47,7 @@ class Methods():
             return project
             #
         except StorjException as exception:
-            print("Exception Caught: ", exception.details)
+            print(json.dumps("Exception Caught: ", exception.details))
 
     def EnlistAllBuckets(self,project):
         try:
@@ -64,7 +65,7 @@ class Methods():
             #print("Buckets listing: COMPLETE!")
             #
         except StorjException as exception:
-            print("Exception Caught: ", exception.details)
+          print("Exception Caught: ", exception.details)
     
     def ListObject(self,project):
         try:
@@ -97,7 +98,7 @@ class Methods():
                 fn = os.path.basename(file_item.filename)
                 
                 # open read and write the file into the server
-                file_handle = open(fn, 'wb').write(file_item.file.read())
+                file_handle = open(fn, 'r+b').write(file_item.file.read())
 
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
@@ -119,11 +120,11 @@ class Methods():
     def DownloadObject(self,project):
         try:
             # download file/object
-            #print("\nDownloading data...")
+            print("\nDownloading data...")
             # get handle of file which data has to be downloaded
-            file_handle = open(destination_full_filename, 'w+b')
+            file_handle = open('/var/www/html/master/dcs-api/test/andres.txt', 'w+b') 
             # get download handle to specified bucket and object path to be downloaded
-            download = project.download_object(bucket, file_name)
+            download = project.download_object(bucket, 'andres.txt') #Bucket, filename inside bucket
             #
             # download data from storj to file
             download.read_file(file_handle)
@@ -132,7 +133,8 @@ class Methods():
             download.close()
             # close file handle
             file_handle.close()
-            #print("Download: COMPLETE!")
+            #print(json.dumps("message: Download Complete"
+            print("Download: COMPLETE!")
             #
         except StorjException as exception:
-            print("Exception Caught: ", exception.details)
+           print("Exception Caught: ", exception.details)
