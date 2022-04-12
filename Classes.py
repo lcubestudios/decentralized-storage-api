@@ -47,7 +47,7 @@ class Methods():
             return project
             #
         except StorjException as exception:
-            print(json.dumps("Exception Caught: ", exception.details))
+            print("Exception Caught: ", exception.details)
 
     def EnlistAllBuckets(self,project):
         try:
@@ -65,8 +65,8 @@ class Methods():
             #print("Buckets listing: COMPLETE!")
             #
         except StorjException as exception:
-          print("Exception Caught: ", exception.details)
-    
+            print("Exception Caught: ", exception.details)
+
     def ListObject(self,project):
         try:
             # list objects in given bucket with above options or None
@@ -122,7 +122,7 @@ class Methods():
             # download file/object
             print("\nDownloading data...")
             # get handle of file which data has to be downloaded
-            file_handle = open('/var/www/html/master/dcs-api/test/andres.txt', 'w+b') 
+            file_handle = open('/var/www/html/master/dcs-api/test/andres.txt', 'w+b')
             # get download handle to specified bucket and object path to be downloaded
             download = project.download_object(bucket, 'andres.txt') #Bucket, filename inside bucket
             #
@@ -137,4 +137,4 @@ class Methods():
             print("Download: COMPLETE!")
             #
         except StorjException as exception:
-           print("Exception Caught: ", exception.details)
+            print("Exception Caught: ", exception.details)
