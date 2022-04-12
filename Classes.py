@@ -97,7 +97,7 @@ class Methods():
                 fn = os.path.basename(file_item.filename)
                 
                 # open read and write the file into the server
-                file_handle = open(fn, 'r+b').write(file_item.file.read())
+                file_handle = open(fn, 'wb').write(file_item.file.read())
 
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
