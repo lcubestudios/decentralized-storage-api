@@ -19,12 +19,12 @@ load_dotenv()
 class Credentials():
     def __init__(self):
         # Storj configuration information
-        global api_key, satellite, encryption_passphrase, bucket, src_full_name, destination_full_filename
+        global api_key, satellite, encryption_passphrase, bucket, src_dir, destination_full_filename
         api_key =  os.getenv('API_KEY')
         satellite = os.getenv('SATELLITE')
         encryption_passphrase = os.getenv('ENCRYPTION_PASSPHRASE')
         bucket = "uplink"
-        src_full_name = "/tmp/systemd-private-02b2559adb4242f997a2fe5c52682d61-apache2.service-rUQLRf/tmp/" + fn # Source and destination path and file name for testing
+        src_dir = "/tmp/systemd-private-02b2559adb4242f997a2fe5c52682d61-apache2.service-rUQLRf/tmp/" # Source and destination path and file name for testing
         destination_full_filename ="/Users/cloudninja/Desktop/ipfs3.png "
 
 class Methods():
@@ -90,14 +90,14 @@ class Methods():
             # upload file/object
             #print("\nUploading data...")
             # get handle of file to be uploaded
-            # file_handle = open(src_full_name, 'r+b')
+            # file_handle = open(src_dir, 'r+b')
             # check if the file has been uploaded
             if file_item.filename:
                 # strip the leading path from the file name
                 fn = os.path.basename(file_item.filename.replace("\\", "/" ))
                 
                 # open read and write the file into the server
-                file_handle = open('/tmp/' + fn, 'r+b').write(file_item.file.read())
+                file_handle = open(src_dir + fn, 'r+b').write(file_item.file.read())
 
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
