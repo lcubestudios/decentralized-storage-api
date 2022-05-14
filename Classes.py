@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-print("Content-Type:text/html;charset=utf-8")
 print()
 from array import array
 from datetime import datetime
@@ -25,7 +24,7 @@ class Credentials():
         satellite = os.getenv('SATELLITE')
         encryption_passphrase = os.getenv('ENCRYPTION_PASSPHRASE')
         bucket = "uplink"
-        src_full_name = "/Users/cloudninja/Desktop/ipfs.png" # Source and destination path and file name for testing
+        src_full_name = "/tmp/systemd-private-02b2559adb4242f997a2fe5c52682d61-apache2.service-rUQLRf/tmp/" + fn # Source and destination path and file name for testing
         destination_full_filename ="/Users/cloudninja/Desktop/ipfs3.png "
 
 class Methods():
@@ -95,10 +94,10 @@ class Methods():
             # check if the file has been uploaded
             if file_item.filename:
                 # strip the leading path from the file name
-                fn = os.path.basename(file_item.filename)
+                fn = os.path.basename(file_item.filename.replace("\\", "/" ))
                 
                 # open read and write the file into the server
-                file_handle = open(fn, 'r+b').write(file_item.file.read())
+                file_handle = open('/tmp/' + fn, 'r+b').write(file_item.file.read())
 
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
@@ -111,9 +110,12 @@ class Methods():
                 # close file handle
                 file_handle.close()
                 print("Upload: Complete!")
+                message = 'The file"' + fn + '" was uploaded successfully'
                 #
             else:
-                print("Upload Failed")
+                message = 'No file was uploaded'
+            
+            print(message)
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
     
