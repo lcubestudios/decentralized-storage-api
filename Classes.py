@@ -7,11 +7,11 @@ from uplink_python.module_classes import ListObjectsOptions, Permission, SharePr
 from uplink_python.uplink import Uplink
 from dotenv import load_dotenv
 import os
-import sys
-import requests
-import cgi 
+import cgi
 import cgitb; cgitb.enable()
 import json
+import sys
+import base64
 
 # LOAD CONTAINER VARIABLES
 load_dotenv()
@@ -24,7 +24,7 @@ class Credentials():
         satellite = os.getenv('SATELLITE')
         encryption_passphrase = os.getenv('ENCRYPTION_PASSPHRASE')
         bucket = "uplink"
-        src_dir = "/tmp/systemd-private-02b2559adb4242f997a2fe5c52682d61-apache2.service-rUQLRf/tmp/" # Source and destination path and file name for testing
+        src_dir = "/tmp/"
         destination_full_filename ="/Users/cloudninja/Desktop/ipfs3.png "
 
 class Methods():
@@ -87,18 +87,11 @@ class Methods():
 
     def UploadObject(self,project,file_item):
         try:
-            # upload file/object
-            #print("\nUploading data...")
-            # get handle of file to be uploaded
-            # file_handle = open(src_dir, 'r+b')
-            # check if the file has been uploaded
             if file_item.filename:
                 # strip the leading path from the file name
                 fn = os.path.basename(file_item.filename.replace("\\", "/" ))
-                
                 # open read and write the file into the server
-                file_handle = file_item
-
+                file_handle = open(src_dir + fn, 'r+b')
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
                 #
@@ -109,34 +102,33 @@ class Methods():
                 upload.commit()
                 # close file handle
                 file_handle.close()
-                print("Upload: Complete!")
-                message = 'The file"' + fn + '" was uploaded successfully'
+                #print("Upload: Complete!")
                 #
-            else:
-                message = 'No file was uploaded'
-            
-            print(message)
         except StorjException as exception:
-            print("Exception Caught: ", exception.details)
+            print(json.dumps({"status": 500, "message": exception.details}))
     
-    def DownloadObject(self,project):
+    def DownloadObject(self,project,file_name):
         try:
-            # download file/object
-            print("\nDownloading data...")
-            # get handle of file which data has to be downloaded
-            file_handle = open('/var/www/html/master/dcs-api/test/andres.txt', 'w+b')
+            #file_handle create file, donwload = binary data
+            file_handle = open(src_dir+file_name, 'wb')
             # get download handle to specified bucket and object path to be downloaded
-            download = project.download_object(bucket, 'andres.txt') #Bucket, filename inside bucket
+            download = project.download_object(bucket, file_name) #Bucket, filename inside bucket
             #
             # download data from storj to file
             download.read_file(file_handle)
-            #
+            # 
             # close the download stream
             download.close()
-            # close file handle
             file_handle.close()
             #print(json.dumps("message: Download Complete"
-            print("Download: COMPLETE!")
+            #message = "Download Complete"
+            #print(json.dumps(message))
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
+
+    def DeleteItems(self,project,file_item):
+        try:
+            project.delete_object(bucket, file_item)
+        except StorjException as exception:
+            print(json.dumps({"status": 500, "message": exception.details}))
