@@ -4,6 +4,8 @@ print('Access-Control-Allow-Headers: *')
 print('Access-Control-Allow-Methods: *')
 print()
 from Classes import *
+import sys
+
 creds = Credentials()
 method = Methods()
 project = method.StablishConnection()

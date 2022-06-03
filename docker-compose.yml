@@ -1,0 +1,18 @@
+version: '3.9'
+services:
+    dcs-api:
+      image: lcubestudios/storj
+      container_name: dcs-api
+      build:
+        context: '.'
+      environment:
+        - API_KEY=${API_KEY}
+        - SATELLITE=${SATELLITE}
+        - ENCRYPTION_PASSPHRASE=${ENCRYPTION_PASSPHRASE}
+        - DOMAIN=${DOWNLOAD_DIR}
+      ports:
+        - 80:80
+        - 443:443
+      volumes:
+        - .:/var/www/html
+

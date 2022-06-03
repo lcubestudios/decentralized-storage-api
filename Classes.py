@@ -10,8 +10,6 @@ import os
 import cgi
 import cgitb; cgitb.enable()
 import json
-import sys
-import base64
 
 # LOAD CONTAINER VARIABLES
 load_dotenv()
@@ -19,13 +17,12 @@ load_dotenv()
 class Credentials():
     def __init__(self):
         # Storj configuration information
-        global api_key, satellite, encryption_passphrase, bucket, src_dir, destination_full_filename
+        global api_key, satellite, encryption_passphrase, bucket, domain
         api_key =  os.getenv('API_KEY')
         satellite = os.getenv('SATELLITE')
         encryption_passphrase = os.getenv('ENCRYPTION_PASSPHRASE')
+        domain = os.getenv('DOWNLOAD_DIR')
         bucket = "uplink"
-        src_dir = "/tmp/"
-        destination_full_filename ="/Users/cloudninja/Desktop/ipfs3.png "
 
 class Methods():
 
@@ -90,8 +87,9 @@ class Methods():
             if file_item.filename:
                 # strip the leading path from the file name
                 fn = os.path.basename(file_item.filename.replace("\\", "/" ))
+                #
                 # open read and write the file into the server
-                file_handle = open(src_dir + fn, 'r+b')
+                file_handle = file_item.value
                 # get upload handle to specified bucket and upload file path
                 upload = project.upload_object(bucket, file_item.filename)
                 #
@@ -101,17 +99,17 @@ class Methods():
                 # commit the upload
                 upload.commit()
                 # close file handle
-                file_handle.close()
-                #print("Upload: Complete!")
-                #
+                #file_item.close()
+                print("Upload: Complete!")
+                
         except StorjException as exception:
             print(json.dumps({"status": 500, "message": exception.details}))
     
     def DownloadObject(self,project,file_name):
         try:
             #file_handle create file, donwload = binary data
-            file_handle = open(src_dir+file_name, 'wb')
-            # get download handle to specified bucket and object path to be downloaded
+            file_handle = open('tmp/' + file_name, mode="wb")
+            #get download handle to specified bucket and object path to be downloaded
             download = project.download_object(bucket, file_name) #Bucket, filename inside bucket
             #
             # download data from storj to file
@@ -121,8 +119,8 @@ class Methods():
             download.close()
             file_handle.close()
             #print(json.dumps("message: Download Complete"
-            #message = "Download Complete"
-            #print(json.dumps(message))
+            message = domain + file_name
+            print(json.dumps(message))
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
