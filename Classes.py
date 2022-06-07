@@ -119,8 +119,8 @@ class Methods():
             download.close()
             file_handle.close()
             #print(json.dumps("message: Download Complete"
-            message = domain + file_name
-            print(json.dumps(message))
+            url = domain + file_name
+            print(json.dumps({"status": 200, "url": url}))
             #
         except StorjException as exception:
             print("Exception Caught: ", exception.details)
